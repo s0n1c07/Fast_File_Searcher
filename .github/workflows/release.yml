@@ -10,29 +10,24 @@ permissions:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+
       - run: cargo build --release
-      - name: Rename output
+
+      - name: Rename binary
         run: |
-          mkdir -p output
-          if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            cp target/release/Fast_File_Searcher.exe output/Fast_File_Searcher-windows.exe
-          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
-            cp target/release/Fast_File_Searcher output/Fast_File_Searcher-macos
-          else
-            cp target/release/Fast_File_Searcher output/Fast_File_Searcher-linux
-          fi
+          mkdir output
+          copy target\release\Fast_File_Searcher.exe output\Fast_File_Searcher-windows.exe
+
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}-build
+          name: windows-build
           path: output/*
 
   release:
@@ -41,21 +36,11 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: ubuntu-latest-build
-          path: ./artifacts/ubuntu
-      - uses: actions/download-artifact@v4
-        with:
-          name: windows-latest-build
-          path: ./artifacts/windows
-      - uses: actions/download-artifact@v4
-        with:
-          name: macos-latest-build
-          path: ./artifacts/macos
+          name: windows-build
+          path: ./windows
+
       - uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: |
-            ./artifacts/ubuntu/*
-            ./artifacts/windows/*
-            ./artifacts/macos/*
+          files: ./windows/*
