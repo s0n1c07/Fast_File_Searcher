@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
 
 permissions:
   contents: write
@@ -30,7 +30,6 @@ jobs:
             target/release/*
             !target/release/*.d
             !target/release/*.pdb
-            !target/release/*.dll
 
   release:
     needs: build
@@ -57,3 +56,7 @@ jobs:
             ./ubuntu/*
             ./windows/*
             ./macos/*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
