@@ -7,7 +7,12 @@ edition = "2024"
 walkdir = "2.4"
 rayon = "1.8"
 clap = { version = "4.4", features = ["derive"] }
-eframe = "0.27"
+eframe = "0.25"
+egui = "0.25"
+ignore = "0.4"
+num_cpus = "1.16"
+
+winapi = { version = "0.3", features = ["winuser", "windef"] }
 
 [package.metadata.bundle]
 name = "Fast File Searcher"
