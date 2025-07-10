@@ -131,3 +131,4 @@ fn main() -> Result<(), eframe::Error> {
         Box::new(|_cc| Box::new(FileSearcherApp::default())),
     )
 }
+// new file
