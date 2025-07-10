@@ -1,0 +1,14 @@
+[package]
+name = "Fast_File_Searcher"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+walkdir = "2.4"
+rayon = "1.8"
+clap = { version = "4.4", features = ["derive"] }
+eframe = "0.27"
+
+[package.metadata.bundle]
+name = "Fast File Searcher"
+identifier = "com.rajveer.fastfilesearcher"
