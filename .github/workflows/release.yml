@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo build --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-build
+          path: target/release/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-latest-build
+          path: ./ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: windows-latest-build
+          path: ./windows
+      - uses: actions/download-artifact@v4
+        with:
+          name: macos-latest-build
+          path: ./macos
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ./ubuntu/*
+            ./windows/*
+            ./macos/*
