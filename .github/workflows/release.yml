@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -20,10 +20,20 @@ jobs:
         with:
           toolchain: stable
       - run: cargo build --release
+      - name: Rename output
+        run: |
+          mkdir -p output
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            cp target/release/Fast_File_Searcher.exe output/Fast_File_Searcher-windows.exe
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            cp target/release/Fast_File_Searcher output/Fast_File_Searcher-macos
+          else
+            cp target/release/Fast_File_Searcher output/Fast_File_Searcher-linux
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-build
-          path: target/release/*
+          path: output/*
 
   release:
     needs: build
