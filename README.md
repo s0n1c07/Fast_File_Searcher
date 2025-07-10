@@ -59,6 +59,8 @@ cargo run --release
  - target/release/fast-file-searcher.exe
  - You can share this .exe with other Windows users — they don’t need Rust installed.
 
+---
+
 ## ⚙️ How It Works
  - Uses ignore::WalkBuilder for efficient file walking.
 
@@ -70,9 +72,13 @@ cargo run --release
 
  - Measures & displays real elapsed time from start to final result.
 
+---
+
 ## ❌ Platform Support
  - Windows only.
  - Explorer open functionality is Windows-specific.
+
+---
 
 ## ✨ Credits
  - Written in Rust 🦀
